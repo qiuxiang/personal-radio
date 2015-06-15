@@ -1,5 +1,9 @@
-var React = require('react')
-  , cloudmusic = require('./cloudmusic')
+var cloudmusic = require('./cloudmusic')
+  , open = require('open')
+  , remote = require('remote')
+  , Menu = remote.require('menu')
+  , MenuItem = remote.require('menu-item')
+  , React = require('react')
 
 var RadioPlayer = React.createClass({
   getInitialState: function() {
@@ -20,7 +24,6 @@ var RadioPlayer = React.createClass({
       .getRadio()
       .then(function (response) {
         var song = response.data[0]
-        console.log(song)
         self.player.src = song.mp3Url
         self.player.play()
         self.setState({song: song, playing: true})
@@ -42,14 +45,28 @@ var RadioPlayer = React.createClass({
   handleNext: function () {
     this.playNewSong()
   },
+  handleContextMenu: function () {
+    this.menu.popup(remote.getCurrentWindow())
+  },
   componentDidMount: function () {
     var self = this
+
     this.player = new Audio
     this.player.addEventListener('ended', this.playNewSong)
     this.player.addEventListener('timeupdate', function () {
-      self.setState({progress: self.player.currentTime / self.player.duration * 100})
+      self.setState({
+        progress: self.player.currentTime / self.player.duration * 100})
     })
+
     this.playNewSong()
+
+    this.menu = new Menu
+    this.menu.append(new MenuItem({
+      label: '在浏览器中打开',
+      click: function () {
+        open('http://music.163.com/#/song?id=' + self.state.song.id)
+      }
+    }))
   },
   render: function() {
     return (
@@ -60,7 +77,8 @@ var RadioPlayer = React.createClass({
             title={
               '标题：' + this.state.song.name + '\n' +
               '专辑：' + this.state.song.album.name + '\n' +
-              '艺术家：' + this.state.song.artists[0].name} />
+              '艺术家：' + this.state.song.artists[0].name}
+            onContextMenu={this.handleContextMenu} />
         </div>
         <div className="progress-bar">
           <div className="progress" style={{width: this.state.progress + '%'}}></div>
@@ -69,7 +87,8 @@ var RadioPlayer = React.createClass({
           <button
             type="button"
             title={this.state.playing ? '暂停' : '播放'}
-            className={this.state.playing ? 'icon-pause-outline' : 'icon-play-outline'}
+            className={
+              this.state.playing ? 'icon-pause-outline' : 'icon-play-outline'}
             onClick={this.handlePause}></button>
           <button
             type="button"
