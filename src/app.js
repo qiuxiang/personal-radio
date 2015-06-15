@@ -1,9 +1,6 @@
 var BrowserWindow = require('browser-window')
   , app = require('app')
-  , cloudmusic = require('./cloudmusic')
   , playerWindow
-
-cloudmusic.login('xiang.qiu@qq.com', '')
 
 app
   .on('ready', function() {
