@@ -10,6 +10,7 @@ var RadioPlayer = React.createClass({
           picUrl: 'https://facebook.github.io/react/img/logo.svg'
         }
       },
+      progress: 0,
       playing: false
     }
   },
@@ -42,10 +43,11 @@ var RadioPlayer = React.createClass({
     this.playNewSong()
   },
   componentDidMount: function () {
+    var self = this
     this.player = new Audio
     this.player.addEventListener('ended', this.playNewSong)
     this.player.addEventListener('timeupdate', function () {
-      // todo
+      self.setState({progress: self.player.currentTime / self.player.duration * 100})
     })
     this.playNewSong()
   },
@@ -59,6 +61,9 @@ var RadioPlayer = React.createClass({
               '标题：' + this.state.song.name + '\n' +
               '专辑：' + this.state.song.album.name + '\n' +
               '艺术家：' + this.state.song.artists[0].name} />
+        </div>
+        <div className="progress-bar">
+          <div className="progress" style={{width: this.state.progress + '%'}}></div>
         </div>
         <div className="actions">
           <button
