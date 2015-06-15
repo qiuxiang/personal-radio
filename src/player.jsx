@@ -42,7 +42,7 @@ var RadioPlayer = React.createClass({
     this.playNewSong()
   },
   componentDidMount: function () {
-    this.player = document.getElementById('audio-player')
+    this.player = new Audio
     this.player.addEventListener('ended', this.playNewSong)
     this.playNewSong()
   },
@@ -52,10 +52,9 @@ var RadioPlayer = React.createClass({
         <div className="picture">
           <img
             src={this.state.song.album.picUrl}
-            title={this.state.song.artists[0].name + ' - ' + this.state.song.name} />
-        </div>
-        <div className="audio">
-          <audio id="audio-player"></audio>
+            title={
+              this.state.song.artists[0].name + '\n' +
+              this.state.song.name} />
         </div>
         <div className="actions">
           <button
