@@ -44,6 +44,9 @@ var RadioPlayer = React.createClass({
   componentDidMount: function () {
     this.player = new Audio
     this.player.addEventListener('ended', this.playNewSong)
+    this.player.addEventListener('timeupdate', function () {
+      // todo
+    })
     this.playNewSong()
   },
   render: function() {
@@ -53,24 +56,29 @@ var RadioPlayer = React.createClass({
           <img
             src={this.state.song.album.picUrl}
             title={
-              this.state.song.artists[0].name + '\n' +
-              this.state.song.name} />
+              '标题：' + this.state.song.name + '\n' +
+              '专辑：' + this.state.song.album.name + '\n' +
+              '艺术家：' + this.state.song.artists[0].name} />
         </div>
         <div className="actions">
           <button
             type="button"
+            title={this.state.playing ? '暂停' : '播放'}
             className={this.state.playing ? 'icon-pause-outline' : 'icon-play-outline'}
             onClick={this.handlePause}></button>
           <button
             type="button"
+            title={this.state.starred ? '收藏' : '取消收藏'}
             className={this.state.starred ? 'icon-heart-filled' : 'icon-heart'}
             onClick={this.handleStar}></button>
           <button
             type="button"
+            title="不再播放"
             className="icon-trash"
             onClick={this.handleRemove}></button>
           <button
             type="button"
+            title="下一首"
             className="icon-fast-fw-outline"
             onClick={this.handleNext}></button>
         </div>
