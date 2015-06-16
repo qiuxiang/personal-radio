@@ -1,4 +1,5 @@
 var cloudmusic = require('./cloudmusic')
+  , notifier = require('node-notifier')
   , open = require('open')
   , remote = require('remote')
   , Menu = remote.require('menu')
@@ -27,6 +28,10 @@ var RadioPlayer = React.createClass({
         self.player.src = song.mp3Url
         self.player.play()
         self.setState({song: song, playing: true})
+        notifier.notify({
+          'title': song.name,
+          'message': '专辑：' + song.album.name + '\n艺术家：' + song.artists[0].name
+        })
       })
   },
   handlePause: function () {

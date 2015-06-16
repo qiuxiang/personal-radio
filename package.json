@@ -18,6 +18,7 @@
     "open": "0.0.5",
     "react": "^0.13.3",
     "request": "^2.57.0",
-    "tough-cookie-filestore": "0.0.1"
+    "tough-cookie-filestore": "0.0.1",
+    "node-notifier": "~4.2.1"
   }
 }
