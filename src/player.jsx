@@ -54,8 +54,11 @@ var RadioPlayer = React.createClass({
     this.player = new Audio
     this.player.addEventListener('ended', this.playNewSong)
     this.player.addEventListener('timeupdate', function () {
-      self.setState({
-        progress: self.player.currentTime / self.player.duration * 100})
+      // 避免频繁地更新 UI，浪费计算资源
+      if (Math.abs(Math.round(self.player.currentTime) - self.player.currentTime) < 0.1) {
+        self.setState({
+          progress: self.player.currentTime / self.player.duration * 100})
+      }
     })
 
     this.playNewSong()
